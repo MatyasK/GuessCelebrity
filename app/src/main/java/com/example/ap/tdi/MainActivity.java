@@ -11,6 +11,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,7 +76,17 @@ public class MainActivity extends AppCompatActivity {
 
             result = task.execute("http://www.posh24.com/celebrities").get();
 
-            Log.i("contentof result: ","just "+ result);
+            String[] splitResult = result.split("<div class=\"sidebarInnerContainer\">");
+
+            Pattern p = Pattern.compile("img src\"(.*?)\"");
+
+            Matcher m = p.matcher(splitResult[0]);
+
+            while (m.find()){
+                System.out.println(m.group(1));
+            }
+
+           // Log.i("contentof result: ","just "+ result);
 
 
         } catch (InterruptedException e) {
