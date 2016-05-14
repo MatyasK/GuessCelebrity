@@ -18,7 +18,7 @@
 
         <ImageView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="280dp"
             android:id="@+id/celebrityImgView"
             android:layout_row="0"
             android:layout_column="0" />
