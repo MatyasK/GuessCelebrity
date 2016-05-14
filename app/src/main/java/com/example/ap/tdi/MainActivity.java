@@ -6,8 +6,10 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     public int choosenCeleb = 0;
     public ImageView pictureView;
     public Button button1, button2, button3, button4;
+    int randomButton;
 
 
     public class DownloadTask extends AsyncTask<String, Void, String>{
@@ -165,8 +168,25 @@ public class MainActivity extends AppCompatActivity {
         Random random = new Random();
         choosenCeleb = random.nextInt(Urls.size());
         String choosenCelebname = Names.get(choosenCeleb);
-        int randomButton = random.nextInt(4);
+
+        randomButton = random.nextInt(4);
+
         System.out.println("Position " + randomButton);
+
+        ImageDownload imageDownload = new ImageDownload();
+
+        try {
+            Bitmap picture = imageDownload.execute(Urls.get(choosenCeleb)).get();
+            pictureView.setImageBitmap(picture);
+
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+
         if (randomButton == 1){
             button1.setText(choosenCelebname);
             button2.setText(Names.get(random.nextInt(Names.size())));
@@ -188,17 +208,13 @@ public class MainActivity extends AppCompatActivity {
             button4.setText(Names.get(random.nextInt(Names.size())));
             button3.setText(choosenCelebname);
         }
-        ImageDownload imageDownload = new ImageDownload();
-
-        try {
-            Bitmap picture = imageDownload.execute(Urls.get(choosenCeleb)).get();
-            pictureView.setImageBitmap(picture);
-
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+    }
+    public void CheckAnswer(View view){
+        if (Integer.parseInt((String) view.getTag()) == randomButton){
+            Toast.makeText(getApplicationContext(),"Correct!",Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(getApplicationContext(),"Wrong!", Toast.LENGTH_SHORT).show();
         }
+        nwQuiz();
     }
 }
